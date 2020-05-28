@@ -2,9 +2,6 @@
 html, body {
 	height: 100% !important;
 }
-.btn{
-	outline: none;
-}
 
 .main-loading {
 	position: fixed;
@@ -252,10 +249,7 @@ html, body {
 	height: 100%;
 	color: #fff;
 }
-.hero .img{
-	height: 100%;
-	width: 100%;
-}
+
 
 .hero .text {
 	position: absolute;
@@ -307,7 +301,7 @@ html, body {
 }
 
 .hero .cta .btn.btn-primary {
-	border-radius: 50px;
+	border-radius: 50px%;
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
 	-o-border-radius: 50px;
@@ -576,19 +570,18 @@ article.card .card-more i {
 
 /*projects*/
 .projects-picture {
-	width: 350px;
+	width: 90%;
 	margin: 0 auto;
 }
 
 .projects-picture img {
-	width: 450px;
-	margin-left: -40px;
-	margin-top: 10px;
+	width: 100%;
+	height: 100%;
 }
 
 .projects-details {
 	color: #fff;
-	margin-top: -130px;
+	margin-top: -100px;
 }
 
 .projects-details .projects-badge {
@@ -606,7 +599,10 @@ article.card .card-more i {
 .projects-details .projects-title {
 	line-height: 45px;
 }
-
+.projects-details .projects-title1 {
+	line-height: 45px;
+	font-size: 20px;
+}
 .projects-details .projects-description {
 	line-height: 28px;
 	margin-top: 20px;
