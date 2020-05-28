@@ -90,7 +90,7 @@ public class MailController {
             @RequestParam(required = false) String message, ModelMap map) {
         MailVO mailDO = new MailVO();
         mailDO.setEmail(email);
-        mailDO.setTitle(subject);
+        mailDO.setTitle("趣互动反馈通知");
         mailDO.setContent(message);
         Map<String, Object> map1 = new HashMap<>(16);
         try {
@@ -106,11 +106,10 @@ public class MailController {
             map.put("myError", myError);
             return "error/error";
         }
-        log.info("发送网页模板邮件成功：{}，用户名：{}，用户发送的信息：{}，网页模板参数：{}", name, message, mailDO.toString(), map);
+        log.info("发送网页模板邮件成功：{}，用户名：{}，用户主题：{}，用户发送的信息：{}，网页模板参数：{}", name, subject, message, mailDO.toString(), map);
         map.put("message", true);
         return "index/index";
     }
-
 
 
 }
