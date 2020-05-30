@@ -22,3 +22,9 @@ spring.mail.properties.mail.smtp.starttls.required=true
 static目录下面添加一个error目录，目录中添加404.html这样
 如果有未知的请求就会统一到达这个页面中了
 ```
+
+```$xslt
+2020年5月30日
+准备配置一下shiro进行权限判断
+
+```
