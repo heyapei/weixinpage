@@ -1,5 +1,6 @@
 package com.hyp.weixinpage.service.mail.impl;
 
+import com.hyp.weixinpage.exception.MyDefinitionException;
 import com.hyp.weixinpage.pojo.vo.MailVO;
 import com.hyp.weixinpage.service.mail.MailService;
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +136,7 @@ public class MailServiceImpl implements MailService {
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             log.error("模板邮件发送失败->message:{}", e.getMessage());
+            throw new MyDefinitionException("邮件发送错误");
         }
     }
 
