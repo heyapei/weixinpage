@@ -1,9 +1,10 @@
 package com.hyp.weixinpage.controller.mail;
 
+import com.hyp.weixinpage.pojo.modal.WeixinFeedbackEmail;
 import com.hyp.weixinpage.pojo.vo.MailVO;
-import com.hyp.weixinpage.pojo.vo.resultone.MyError;
 import com.hyp.weixinpage.pojo.vo.resultone.Result;
 import com.hyp.weixinpage.service.mail.MailService;
+import com.hyp.weixinpage.service.mail.WeixinFeedbackEmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,13 +81,16 @@ public class MailController {
         return Result.buildResult(Result.Status.OK);
     }*/
 
+    @Autowired
+    private WeixinFeedbackEmailService weixinFeedbackEmailService;
+
     @RequestMapping("/sendTemplateMail")
     public String sendTemplateMail(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String subject,
-            @RequestParam(required = false) String message, ModelMap map) {
-        MailVO mailDO = new MailVO();
+            @RequestParam(required = true) String name,
+            @RequestParam(required = true) String email,
+            @RequestParam(required = true) String subject,
+            @RequestParam(required = true) String message, ModelMap map) {
+        /*MailVO mailDO = new MailVO();
         mailDO.setEmail(email);
         mailDO.setTitle("趣互动反馈通知");
         mailDO.setContent(message);
@@ -106,7 +108,14 @@ public class MailController {
             map.put("myError", myError);
             return "error/error";
         }
-        log.info("发送网页模板邮件成功：{}，用户名：{}，用户主题：{}，用户发送的信息：{}，网页模板参数：{}", name, subject, message, mailDO.toString(), map);
+        log.info("发送网页模板邮件成功：{}，用户名：{}，用户主题：{}，用户发送的信息：{}，网页模板参数：{}", name, subject, message, mailDO.toString(), map);*/
+
+        WeixinFeedbackEmail weixinFeedbackEmail = WeixinFeedbackEmail.init();
+        weixinFeedbackEmail.setSendToName(name);
+        weixinFeedbackEmail.setSendTo(email);
+        weixinFeedbackEmail.setEmailTitle(subject);
+        weixinFeedbackEmail.setEmailContent(message);
+        weixinFeedbackEmailService.saveWeixinFeedbackEmailReturnPK(weixinFeedbackEmail);
         map.put("message", true);
         return "index/index";
     }
