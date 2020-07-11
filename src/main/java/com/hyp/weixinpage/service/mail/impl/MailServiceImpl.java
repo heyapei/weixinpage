@@ -6,8 +6,6 @@ import com.hyp.weixinpage.service.mail.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,11 @@ import org.thymeleaf.context.Context;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -39,27 +40,35 @@ public class MailServiceImpl implements MailService {
     @Value("${mail.fromMail.addr}")
     private String from;
 
+    @Value("${mail.fromMail.addr.name}")
+    private String fromName;
+    @Value("${mail.fromMail.addr.email}")
+    private String fromEmail;
+
     /**
      * 纯文本邮件
      *
-     * @param mail
+     * @param mailVO
      */
     //@Async //不解释不懂自行百度，友情提示：有坑
     @Override
-    public void sendTextMail(MailVO mail) {
-        //建立邮件消息
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from); // 发送人的邮箱
-        message.setSubject(mail.getTitle()); //标题
-        message.setTo(mail.getEmail()); //发给谁  对方邮箱
-        message.setText(mail.getContent()); //内容
+    public void sendTextMail(MailVO mailVO) throws AddressException, UnsupportedEncodingException {
         try {
-            javaMailSender.send(message); //发送
-        } catch (MailException e) {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            //是否发送的邮件是富文本（附件，图片，html等）
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+            messageHelper.setFrom(new InternetAddress(from));// 发送人的邮箱
+            messageHelper.setTo(mailVO.getEmail());//发给谁  对方邮箱
+            messageHelper.setSubject(mailVO.getTitle());//标题
+            // 设置为不为html
+            messageHelper.setText(mailVO.getContent(), false);
+            //发送
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
             log.error("纯文本邮件发送失败->message:{}", e.getMessage());
-
         }
     }
+
 
     /**
      * 发送的邮件是富文本（附件，图片，html等）
@@ -73,7 +82,7 @@ public class MailServiceImpl implements MailService {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             //是否发送的邮件是富文本（附件，图片，html等）
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
-            messageHelper.setFrom(from);// 发送人的邮箱
+            messageHelper.setFrom(new InternetAddress(from));// 发送人的邮箱
             messageHelper.setTo(mailVO.getEmail());//发给谁  对方邮箱
             messageHelper.setSubject(mailVO.getTitle());//标题
             messageHelper.setText(mailVO.getContent(), isShowHtml);//false，显示原始html代码，无效果
@@ -111,7 +120,7 @@ public class MailServiceImpl implements MailService {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
-            messageHelper.setFrom(from);// 发送人的邮箱
+            messageHelper.setFrom(new InternetAddress(from));// 发送人的邮箱
             messageHelper.setTo(mailVO.getEmail());//发给谁  对方邮箱
             messageHelper.setSubject(mailVO.getTitle()); //标题
             /*判断传过来的数据有没有指定页面数据*/

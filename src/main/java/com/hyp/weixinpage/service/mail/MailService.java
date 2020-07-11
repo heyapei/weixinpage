@@ -2,6 +2,9 @@ package com.hyp.weixinpage.service.mail;
 
 import com.hyp.weixinpage.pojo.vo.MailVO;
 
+import javax.mail.internet.AddressException;
+import java.io.UnsupportedEncodingException;
+
 /**
  * @Author 何亚培
  * @Version V1.0
@@ -13,7 +16,7 @@ public interface MailService {
      * 纯文本邮件
      * @param mailVO
      */
-    void sendTextMail(MailVO mailVO);
+    void sendTextMail(MailVO mailVO) throws AddressException, UnsupportedEncodingException;
 
     /**
      * 发送的邮件是富文本（附件，图片，html等）
