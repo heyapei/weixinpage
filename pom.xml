@@ -250,7 +250,7 @@
     </dependencies>
 
     <build>
-        <finalName>weixinpage</finalName>
+        <finalName>weixinHomePage</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
